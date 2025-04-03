@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Donate Blood</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    button{
+      font-size:medium;
+      border-radius:10px;
+      background-color:red;
+      color:white;
+    }
+    body{
+      background-color:lightblue;
+      background-image:url("https://t3.ftcdn.net/jpg/00/67/70/40/360_F_67704008_fxdmJ8wDOqDYts9P3tzdbxqZf8NfWT21.jpg");
+      background-repeat:no-repeat;background-attachment: fixed;
+      background-position: center;background-size:30cm;
+    }
+    .container{
+      height:100%;
+      width:100%;
+      background-color:lightsalmon;
+      width:430px;
+      position:relative;
+      top:200px;
+      left:0px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group button {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .form-group-inline {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .form-group-inline label {
+      width: 150px;
+      margin-right: 10px;
+    }
+    .form-group-inline input,
+    .form-group-inline button {
+      flex: 1;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .form-group-inline button {
+      width: auto;
+    }
+  </style>
+</head>
+<body>
+  <nav  style="height:70px;background-color:navy">
+    <ul>
+      <li><a href="home.html"><p style="font-size:x-large"> Home</p></a></li>
+    </ul>
+  </nav>
+  <div class="container">
+    <h1>Register</h1>
+    <form id="registerForm">
+      <div class="form-group-inline">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required style="margin-left:0px;"><pre>
+        <button type="button" id="sendOtpButton">Send OTP</button></pre>
+      </div>
+      <div class="form-group-inline">
+        <label for="otp">OTP:</label>
+        <input type="text" id="otp" name="otp" required><pre>
+        <button type="button" id="verifyOtpButton">Verify OTP</button></pre>
+      </div>
+
+      <div id="additionalInfo" style="display: none;">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required disabled>
+        </div>
+        <div class="form-group">
+          <label for="age">Age:</label>
+          <input type="number" id="age" name="age" required disabled>
+        </div>
+        <div class="form-group">
+          <label for="gender">Gender:</label>
+          <select id="gender" name="gender" required disabled>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="bloodGroup">Blood Group:</label>
+          <select id="bloodGroup" name="bloodGroup" required disabled>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required disabled>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number:</label>
+          <input type="tel" id="phone" name="phone" required disabled>
+        </div>
+        <div class="form-group">
+          <label for="district">District:</label>
+          <input type="text" id="district" name="district" value="Visakhapatnam" readonly>
+        </div>
+        <div class="form-group">
+          <label for="locality">Locality:</label>
+          <select id="locality" name="locality" required disabled>
+            <option value="MVP Colony">MVP Colony</option>
+            <option value="Gajuwaka">Gajuwaka</option>
+            <option value="Dwaraka Nagar">Dwaraka Nagar</option>
+            <option value="Seethammadhara">Seethammadhara</option>
+            <option value="RK Beach">RK Beach</option>
+            <option value="Lawsons Bay">Lawsons Bay</option>
+            <option value="Madhurawada">Madhurawada</option>
+            <option value="Bheemili">Bheemili</option>
+            <option value="Duvvada">Duvvada</option>  
+            <option value="Anakapalle">Anakapalle</option>
+            <option value="Pendurthi">Pendurthi</option>
+            <option value="Parawada">Parawada</option>
+            <option value="Simhachalam">Simhachalam</option>
+            <option value="Chodavaram">Chodavaram</option>
+                </select>
+        </div>
+        <div class="form-group">
+          <button type="submit" disabled>Register</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <script>
+    document.getElementById('sendOtpButton').addEventListener('click', function() {
+      const email = document.getElementById('email').value;
+
+      fetch('/send-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+
+    document.getElementById('verifyOtpButton').addEventListener('click', function() {
+      const email = document.getElementById('email').value;
+      const otp = document.getElementById('otp').value;
+
+      fetch('/verify-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, otp })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);
+        if (data.message === 'OTP verified successfully') {
+          document.getElementById('additionalInfo').style.display = 'block';
+          const inputs = document.querySelectorAll('#additionalInfo input, #additionalInfo select, #additionalInfo button[type="submit"]');
+          inputs.forEach(input => input.disabled = false);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const age = parseInt(document.getElementById('age').value, 10);
+      const gender = document.getElementById('gender').value;
+      const bloodGroup = document.getElementById('bloodGroup').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const phone = document.getElementById('phone').value;
+      const district = document.getElementById('district').value;
+      const locality = document.getElementById('locality').value;
+
+      if (age < 18 || age > 45) {
+        alert('Invalid age. Age must be between 18 and 45.');
+        return;
+      }
+
+      fetch('/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, age, gender, bloodGroup, email, password, phone, district, locality })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        window.location.href = 'dashboard.html';
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
+</body>
+</html>

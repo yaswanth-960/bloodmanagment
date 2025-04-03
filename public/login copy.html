@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Donate Blood</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    
+    body{
+      background-color:lightblue;
+      background-image:url("https://t3.ftcdn.net/jpg/00/67/70/40/360_F_67704008_fxdmJ8wDOqDYts9P3tzdbxqZf8NfWT21.jpg");
+      background-repeat:no-repeat;background-attachment: fixed;
+      background-position: center;background-size:30cm;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="home.html">Home</a></li>
+    </ul>
+  </nav>
+  <div style="background-color:lightsalmon;font-size:large;" class="container">
+    <h1 >Login</h1>
+    <form id="loginForm">
+      <label for="loginEmail">Email:</label><br>
+      <input type="email" id="loginEmail" name="email" required><br><br>
+      <label for="loginPassword">Password:</label><br>
+      <input type="password" id="loginPassword" name="password" required><br><br>
+      <button type="submit">Login</button>
+    
+    <button id="forgotPasswordButton">Forgot Password</button>
+    </form>
+  </div>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+
+      fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      })
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(data => {
+            throw new Error(data.message);
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        alert(data.message);
+        if (data.user) {
+          localStorage.setItem('user', JSON.stringify(data.user));
+          window.location.href = 'dashboard.html';
+        }
+      })
+      .catch(error => {
+        alert(error.message); // Display the error message from the backend
+        console.error('Error:', error);
+      });
+    });
+
+    document.getElementById('forgotPasswordButton').addEventListener('click', function() {
+      window.location.href = 'forgot-password.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - Donate Blood</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body{
+      background-color:orange;
+     background-image:url("https://wallpaperaccess.com/full/9351321.jpg");
+      background-repeat: no-repeat;background-position: center;background-size:1900px;
+    }
+    .container{
+      height:100%;
+      width:100%;
+    }
+    button{
+      padding:10px;
+      font-size:medium;
+      border-radius:10px;
+      background-color:red;
+      color:white;
+    }
+    .button-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .profile-info {
+      margin-bottom: 20px;
+    }
+    .profile-info p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <nav style="height:100px;background-color:navy">
+    <ul>
+      <li><a href="dashboard.html "><p style="font-size:xx-large;color:white;">Dashboard</p></a></li>
+    </ul>
+  </nav>
+  <div class="container" style="background-color:bisque">
+    <h1>Profile</h1>
+    <div id="profileInfo" class="profile-info"></div>
+    <div class="button-container">
+      <div style="display:flex;justify-content:center;
+      align-items:center;">
+      <button id="Button" style="display:flex;justify-content:center;
+      align-items:center;margin-left:600px;"><a href="update.html" style="color:white;">Update</a></button>
+      </div>
+      <div style="display:flex;justify-content:center;
+      align-items:center;margin-left:150px;">
+      <button id="Button" style="display:flex;justify-content:center;
+      align-items:center;"><a href="first.html" style="color:white">Logout</a></button>
+      </div>
+    </div>
+  </div>
+  <script style="text-align:left;">
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        const profileInfo = `
+          <p><strong>Name:</strong> ${user.name}</p>
+          <p><strong>Age:</strong> ${user.age}</p>
+          <p><strong>Gender:</strong> ${user.gender}</p>
+          <p><strong>Email:</strong> ${user.email}</p>
+          <p><strong>Blood Group:</strong> ${user.bloodGroup}</p>
+          <p><strong>Phone:</strong> ${user.phone}</p>
+          <p><strong>District:</strong> Visakhapatnam</p>
+          <p><strong>Locality:</strong> ${user.locality}</p>
+        `;
+        document.getElementById('profileInfo').innerHTML = profileInfo;
+      } else {
+        window.location.href = 'login.html';
+      }
+
+      // Redirect to update page
+      document.getElementById('updateButton').addEventListener('click', function() {
+        window.location.href = 'update.html';
+      });
+
+      // Log out and redirect to home page
+      document.getElementById('logoutButton').addEventListener('click', function() {
+        localStorage.removeItem('user');
+        window.location.href = 'home.html';
+      });
+    });
+  </script>
+</body>
+</html>

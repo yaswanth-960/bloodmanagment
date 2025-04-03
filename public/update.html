@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Profile - Donate Blood</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body{
+      background-image:url("https://bpic.588ku.com/back_water_img/19/04/21/a3c8bf3793097bfc34c1ee4a6936aeac.jpg!/fw/750/quality/99/unsharp/true/compress/true");
+      background-repeat:no-repeat;background-position:center;background-size:2500px;
+      
+    }
+      button{
+      padding:10px;
+      font-size:medium;
+      border-radius:10px;
+      background-color:red;
+      color:white;
+    }
+    .button-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <nav style="height:100px;background-color:navy">
+    <ul>
+      <li><a href="dashboard.html"><p style="font-size:xx-large;color:white;">Dashboard</p></a></li>
+    </ul>
+  </nav>
+  <div class="container" style="height:300px;width:450px;background-color:bisque">
+    <h1>Update Profile</h1>
+    <form id="updateForm">
+      <div class="form-group">
+        <div style="text-align:left;">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+      </div>
+      <div class="form-group">
+        <div style="text-align:left;">
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required><br><br>
+      </div>
+      <div class="form-group">
+        <div style="text-align:left;">
+        <label for="locality">Locality:</label>
+        <select id="locality" name="locality" required><br><br>
+          <option value="MVP Colony">MVP Colony</option>
+          <option value="Gajuwaka">Gajuwaka</option>
+          <option value="Dwaraka Nagar">Dwaraka Nagar</option>
+          <option value="Seethammadhara">Seethammadhara</option>
+          <option value="RK Beach">RK Beach</option>
+          <option value="Lawsons Bay">Lawsons Bay</option>
+          <option value="Madhurawada">Madhurawada</option>
+          <option value="Bheemili">Bheemili</option>
+          <option value="Duvvada">Duvvada</option>  
+          <option value="Anakapalle">Anakapalle</option>
+          <option value="Pendurthi">Pendurthi</option>
+          <option value="Parawada">Parawada</option>
+          <option value="Simhachalam">Simhachalam</option>
+          <option value="Chodavaram">Chodavaram</option>
+        </select>
+      </div>
+      <br>
+      <div class="form-group">
+        <div style="text-align:left;">
+        <label for="bloodGroup">Blood Group:</label>
+        <select id="bloodGroup" name="bloodGroup" required>
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+    </div>
+      <div class="button-container">
+        <div style="display:flex;justify-content:center;align-items:center;
+         margin-left:80px;">
+          <button type="submit" id="updateButton">Update</button>
+        </div>
+        <div style="display:flex;justify-content:center;align-items:center;
+         margin-left:100px;">
+        <button type="button" id="cancelButton">Cancel</button>
+      </div>
+      </div>
+    
+    </form>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        document.getElementById('name').value = user.name;
+        document.getElementById('phone').value = user.phone;
+        document.getElementById('locality').value = user.locality;
+        document.getElementById('bloodGroup').value = user.bloodGroup;
+      } else {
+        window.location.href = 'login.html';
+      }
+
+      // Handle form submission for updating profile
+      document.getElementById('updateForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const locality = document.getElementById('locality').value;
+        const bloodGroup = document.getElementById('bloodGroup').value;
+        const email = user.email;
+
+        fetch('/update-profile', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, name, phone, locality, bloodGroup })
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.message);
+          if (data.user) {
+            // Update localStorage with the new user data
+            localStorage.setItem('user', JSON.stringify(data.user));
+            window.location.href = 'profile.html';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+
+      // Handle cancel button click
+      document.getElementById('cancelButton').addEventListener('click', function() {
+        window.location.href = 'profile.html';
+      });
+    });
+  </script>
+</body>
+</html>

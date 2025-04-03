@@ -1,0 +1,51 @@
+/* Example styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+nav {
+  background-color: #333;
+}
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+nav ul li {
+  display: inline;
+}
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: inline-block;
+}
+.container {
+  position:relative;
+  top:200px;
+  left:0px;
+  text-align :center;
+  height:275px;
+  width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.title {
+  color: #c00;
+  text-align: center;
+}
+.subtitle {
+  color: #555;
+  text-align: center;
+}
+.button-container {
+  text-align: center;
+}
+button {
+  text-decoration: none;
+  padding: 10px 20px;
+  background-color: white;
+} 

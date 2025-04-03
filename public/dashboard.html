@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Donate Blood</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body{
+      background-image:url("https://cdn4.vectorstock.com/i/1000x1000/57/78/donate-blood-background-with-donation-items-vector-14615778.jpg");
+      background-size:1200px;
+    }
+    button{
+      padding:10px;
+      font-size:medium;
+      border-radius:10px;
+      background-color:red;
+      color:white;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: #f8f8f8;
+      border-bottom: 1px solid #ddd;
+    }
+    .header .profile-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    .container {
+      background-color:bisque;
+      padding: 10px;
+      height:100%;
+      width:100%;
+    }
+    .filter-group {
+  
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 10px;
+    }
+    .filter-group label {
+      margin-right: 5px;
+    }
+    .filter-group select {
+      padding: 5px;
+    }
+    .donor-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .donor-table th, .donor-table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    .donor-table th {
+      background-color: #f4f4f4;
+    }
+    .no-data {
+      text-align: center;
+      color: #888;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="header" style="background-color:navy;">
+    <h1 style="color:white;"> Dashboard</h1>
+    <a href="home.html"><p style="color:white;font-size:x-large;">Home</p></a>
+  
+    <button class="profile-button" onclick="viewProfile()">Profile</button>
+    <button class="profile-button" onclick="viewrequest()"><a href="request.html" style="color:white;">Request-blood</a></button>
+    <!--<button class="bloodrequest-button" onclick="viewrequest()"   style="background-color:#007bff;color:white;"><a href="request.html" style="color:white;background-color:#007bff;">blood request</a></button> -->
+  </div>
+  <div class="container">
+    <div class="filter-group">
+      <label for="bloodGroupFilter">Blood Group:</label>
+      <select id="bloodGroupFilter">
+        <option value="">All</option>
+        <option value="A+">A+</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="B-">B-</option>
+        <option value="AB+">AB+</option>
+        <option value="AB-">AB-</option>
+        <option value="O+">O+</option>
+        <option value="O-">O-</option>
+      </select>
+
+      <label for="localityFilter">Locality:</label>
+      <select id="localityFilter">
+        <option value="">All</option>
+        <option value="MVP Colony">MVP Colony</option>
+        <option value="Gajuwaka">Gajuwaka</option>
+        <option value="Dwaraka Nagar">Dwaraka Nagar</option>
+        <option value="Seethammadhara">Seethammadhara</option>
+        <option value="RK Beach">RK Beach</option>
+        <option value="Lawsons Bay">Lawsons Bay</option>
+        <option value="Madhurawada">Madhurawada</option>
+        <option value="Bheemili">Bheemili</option>
+        <option value="Duvvada">Duvvada</option>  
+        <option value="Anakapalle">Anakapalle</option>
+        <option value="Pendurthi">Pendurthi</option>
+        <option value="Parawada">Parawada</option>
+        <option value="Simhachalam">Simhachalam</option>
+        <option value="Chodavaram">Chodavaram</option>
+      </select>
+
+      <button onclick="filterDonors()">Find Donors</button>
+    </div>
+    <table class="donor-table" id="donorTable">
+      <thead>
+        <tr>
+          <th style="background-color:lightgreen">Name</th>
+          <th style="background-color:yellow">Blood Group</th>
+          <th style="background-color:beige">Phone</th>
+          <th style="background-color:violet">Locality</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Donor data will be populated here -->
+      </tbody>
+    </table>
+    <p class="no-data" id="noDataMessage" style="display: none;">No data found</p>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!localStorage.getItem('user')) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      fetchDonors();
+    });
+
+    function viewProfile() {
+      window.location.href = 'profile.html';
+    }
+
+    function fetchDonors() {
+      fetch('/donors')
+        .then(response => response.json())
+        .then(data => {
+          displayDonors(data.donors);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    function displayDonors(donors) {
+      const donorTableBody = document.querySelector('#donorTable tbody');
+      const noDataMessage = document.getElementById('noDataMessage');
+      donorTableBody.innerHTML = '';
+      if (donors.length === 0) {
+        noDataMessage.style.display = 'block';
+        return;
+      }
+      noDataMessage.style.display = 'none';
+      donors.forEach(donor => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${donor.name}</td>
+          <td>${donor.bloodGroup}</td>
+          <td>${donor.phone}</td>
+          <td>${donor.locality}</td>
+        `;
+        donorTableBody.appendChild(row);
+      });
+    }
+
+    function filterDonors() {
+      const bloodGroup = document.getElementById('bloodGroupFilter').value;
+      const locality = document.getElementById('localityFilter').value;
+
+      let query = '';
+      if (bloodGroup) query += `bloodGroup=${encodeURIComponent(bloodGroup)}`;
+      if (locality) query += `${query ? '&' : ''}locality=${encodeURIComponent(locality)}`;
+
+      fetch(`/donors?${query}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          displayDonors(data.donors);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          const donorTableBody = document.querySelector('#donorTable tbody');
+          donorTableBody.innerHTML = '';
+          document.getElementById('noDataMessage').style.display = 'block';
+        });
+    }
+  </script>
+</body>
+</html>
