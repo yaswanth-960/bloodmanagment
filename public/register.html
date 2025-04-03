@@ -432,7 +432,7 @@
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
       btn.disabled = true;
       
-      fetch('http://localhost:5000/send-otp', {
+      fetch('/send-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -467,7 +467,7 @@
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
       btn.disabled = true;
       
-      fetch('http://localhost:5000/verify-otp', {
+      fetch('/verify-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -519,7 +519,7 @@
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
       btn.disabled = true;
       
-      fetch('http://localhost:5000/register', {
+      fetch('/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

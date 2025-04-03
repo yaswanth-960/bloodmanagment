@@ -311,7 +311,7 @@
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
       submitBtn.disabled = true;
       
-      fetch('http://localhost:5000/login', {
+      fetch('/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -111,7 +111,7 @@
       alert(`Blood Group: ${bloodGroup}\nLocality: ${locality}`);
 
       // Optionally, send the request to the server
-      fetch('http://localhost:5000/request-blood', {
+      fetch('/request-blood', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
