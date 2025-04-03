@@ -94,11 +94,6 @@
     </form>
   </div>
   <script>
-      const user = JSON.parse(localStorage.getItem('user'));
-
-if (!user) {
-  window.location.href = "login.html";
-}
     document.getElementById('requestForm').addEventListener('submit', function(event) {
       event.preventDefault();
       const user = JSON.parse(localStorage.getItem('user'));
@@ -116,7 +111,7 @@ if (!user) {
       alert(`Blood Group: ${bloodGroup}\nLocality: ${locality}`);
 
       // Optionally, send the request to the server
-      fetch('/request-blood', {
+      fetch('http://localhost:5000/request-blood', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
