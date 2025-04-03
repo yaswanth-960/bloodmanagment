@@ -118,7 +118,7 @@
         const bloodGroup = document.getElementById('bloodGroup').value;
         const email = user.email;
 
-        fetch('/update-profile', {
+        fetch('http://localhost:5000/update-profile', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
